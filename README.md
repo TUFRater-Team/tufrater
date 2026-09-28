@@ -15,7 +15,12 @@
 
 ## 📌 What It Is
 
-An AI  that can accurately estimate an unrated level’s difficulty on the PGU scale.
+A machine learning model that is trained to output a difficulty rating on The Universal Fourm's PGU scale based on a .adofai file.
+
+It is able to rate:
+- Stamina requirements
+- Difficulty of unusual rhythms and time signitures
+- Pattern variety (e.g a .adofai consisting of just a straight line would get a much lower score than one with a lot more variety of patterns, twirls, and angles)
 
 ### Features we are aiming for:
 
