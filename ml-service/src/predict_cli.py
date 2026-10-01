@@ -11,10 +11,10 @@ Run standalone:
 
 import requests
  
-from core import load_model, predict_difficulty, extract_features_from_file
+from core import load_model, predict_difficulty, extract_gameplay_features, MODEL_PATH
 
 def run_ai_predictor(show_features=False):
-    model = load_model("difficulty_model.txt")
+    model = load_model(MODEL_PATH)
     
     print("Paste in a TUF .adofai download link, or type 'quit' to exit. \n")
     while True:
@@ -32,7 +32,7 @@ def run_ai_predictor(show_features=False):
             print(f"Predicted difficulty: {tier} (raw score: {raw_number:.2f})\n")
 
             if show_features:
-                features = extract_features_from_file(level_json)
+                features = extract_gameplay_features(level_json)
                 print(features)
         except Exception as e:
             print(f"Error: {e}")

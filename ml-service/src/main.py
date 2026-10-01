@@ -6,7 +6,8 @@ import pandas as pd
 
 from scraper import fetch_all_levels, build_rated_levels, save_raw_levels
 from parser import parse_all_gameplay_features, merge_and_save, load_raw_levels
-from train import load_data, train, MODEL_PATH
+from train import load_data, train
+from core import MODEL_PATH
 
 def run_pipeline():
     print("=== Stage 1: Scraping level list ===")

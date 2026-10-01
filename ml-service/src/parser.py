@@ -9,7 +9,7 @@ import requests
 
 from concurrent.futures import ThreadPoolExecutor
 
-from core import extract_gameplay_features
+from core import extract_gameplay_features, calculate_pattern_variety, calculate_rhythm_tech, calculate_stamina_difficulty
 from db import get_db
 
 MAX_WORKERS = 20
@@ -30,6 +30,7 @@ def parse_one_level(row):
 
         features = extract_gameplay_features(level_json)
         features["id"] = row["id"]
+        
         return features
     except Exception as e:
         print(f"Error: Failed on id {row['id']} ({e})")
@@ -51,15 +52,22 @@ def parse_all_gameplay_features(df):
 
 def merge_and_save(df, gameplay_features):
     gameplay_df = pd.DataFrame(gameplay_features)
-    df = df.merge(gameplay_df, on="id", how="left")
- 
+    
     # Drops rows where parsing failed (missing file, timeout, etc.)
+    columns = ["tilecount", "bpm", "twirl_count", "speed_change_count", "s_norm", "rt_score", "p_var"] 
+    columns_to_drop = []
+    for column in columns:
+        if column in df.columns:
+            columns_to_drop.append(column)
+            
+    df = df.drop(columns=columns_to_drop)
+    df = df.merge(gameplay_df, on="id", how="left")
     df = df.dropna(subset=["twirl_count", "speed_change_count"]).reset_index(drop=True)
  
     schema_columns = [
         "id", "song", "creator", "difficulty", "difficulty_number", "tilecount",
         "levelLengthInMs", "bpm", "tuforums_link", "dlLink", "density",
-        "twirl_count", "speed_change_count",
+        "twirl_count", "speed_change_count", "s_norm", "rt_score", "p_var"
     ]
     df_to_save = df.reindex(columns=schema_columns)
  
@@ -78,7 +86,10 @@ def merge_and_save(df, gameplay_features):
                 dlLink TEXT,
                 density REAL,
                 twirl_count INTEGER,
-                speed_change_count INTEGER
+                speed_change_count INTEGER,
+                s_norm REAL,
+                rt_score REAL,
+                p_var REAL
             )
         """)
         df_to_save.to_sql("raw_levels", con, if_exists="replace", index=False)

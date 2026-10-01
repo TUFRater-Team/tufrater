@@ -61,7 +61,12 @@ def save_raw_levels(rated_levels):
                 bpm REAL,
                 tuforums_link TEXT,
                 dlLink TEXT,
-                density REAL
+                density REAL,
+                twirl_count INTEGER,
+                speed_change_count INTEGER,
+                s_norm REAL,
+                rt_score REAL,
+                p_var REAL
             )
         """)
         df_to_save.to_sql("raw_levels", con, if_exists="replace", index=False)

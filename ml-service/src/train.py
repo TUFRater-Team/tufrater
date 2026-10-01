@@ -11,11 +11,9 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split 
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from pathlib import Path
 
 from db import get_db
-
-MODEL_PATH = Path(__file__).resolve().parent / "data" / "difficulty_model.txt"
+from core import MODEL_PATH, FEATURE_COLUMNS
 
 num_round = 100
 params = {
@@ -30,7 +28,7 @@ def load_data():
     return df
 
 def train(df):
-    X = df.drop(columns=["difficulty", "difficulty_number", "id", "song", "creator", "tuforums_link", "dlLink", "density", "levelLengthInMs"])
+    X = df[FEATURE_COLUMNS]
     y = df["difficulty_number"]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
