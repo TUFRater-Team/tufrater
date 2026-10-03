@@ -1,6 +1,6 @@
 # STILL WIP!
 
-![TUFRater](https://shieldcn.dev/header/glow.svg?title=TUFRater&subtitle=An+AI+that+can+accurately+estimate+an+unrated+level%E2%80%99s+difficulty+on+the+PGU+scale.&logo=https%3A%2F%2Fgithub.com%2FT21C%2Ft21c-web-frontend%2Fblob%2Fmain%2Fsrc%2Fassets%2Ftuf-logo%2Flogo.png%3Fraw%3Dtrue&mode=dark)
+![TUFRater](https://shieldcn.dev/header/surface.svg?title=TUFRater&subtitle=A+machine+learning+model+trained+to+output+a+difficulty+rating+on+The+Universal+Fourm%27s+PGU+scale+based+on+a+.adofai+file.&logo=https%3A%2F%2Fimg.notionusercontent.com%2Fext%2Fhttps%253A%252F%252Fs3-us-west-2.amazonaws.com%252Fpublic.notion-static.com%252F6014ff66-521e-473a-a0ea-43de12e548be%252Ftufrater_logo-removebg-preview%281%29.png%2Fsize%2Fw%3D160%3Fmtd%3Dcom&mode=dark&font=jetbrains-mono&brand=TUFRater)
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/github/stars/hasungkr/tufrater.svg?variant=secondary&amp;size=sm&amp;mode=dark"><img alt="GitHub Stars" src="https://www.shieldcn.dev/github/stars/hasungkr/tufrater.svg?variant=secondary&amp;size=sm&amp;mode=light"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/github/forks/hasungkr/tufrater.svg?variant=secondary&amp;size=sm&amp;mode=dark"><img alt="GitHub Forks" src="https://www.shieldcn.dev/github/forks/hasungkr/tufrater.svg?variant=secondary&amp;size=sm&amp;mode=light"></picture>
