@@ -2,38 +2,27 @@
 FastAPI backend using the trained model to create precictions via website.
 
 Run Locally: 
-    uvicorn app:app
+    uvicorn app:app -- reload
 
 Then open http://127.0.0.1:8000/docs
 """
 
-import json 
-
 from fastapi import FastAPI, UploadFile
+from core import load_model, safe_parse_level, predict_difficulty, extract_gameplay_features
 from fastapi.middleware.cors import CORSMiddleware
 
-from core import load_model, predict_difficulty
-
 app = FastAPI()
-
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"])
-
 model = load_model()
 
-# Main root of website
 @app.get("/")
-def root():
-    return {"message": "Web app is running"}
+def main():
+    return {"message": "Server is running"}
 
-# Upload route 
 @app.post("/files/upload")
-async def upload(file: UploadFile):
+async def predict(file: UploadFile):
     contents = await file.read()
-    level_json = json.loads(contents)
-
-    tier, raw_score = predict_difficulty(level_json, model)
-
-    return {
-        "predicted_difficulty": tier,
-        "raw_score": round(float(raw_score), 2),
-    }
+    level_json = safe_parse_level(contents)
+    features = extract_gameplay_features(level_json)
+    tier, raw_number = predict_difficulty(level_json, model)
+    return {"difficulty": tier, "raw_score": raw_number, "features": features}    

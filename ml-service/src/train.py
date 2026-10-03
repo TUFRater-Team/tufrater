@@ -42,10 +42,10 @@ def train(df):
 
     mae = mean_absolute_error(y_test, predictions)
     rmse = np.sqrt(mean_squared_error(y_test, predictions))
-
+    # 
     print(f"MAE: {mae:.2f}")
     print(f"RMSE: {rmse:.2f}")
-
+    # Prints which features are being used most and least when making predictions
     importance = pd.Series(model.feature_importance(), index=X.columns).sort_values(ascending=False)
     print(importance)
 

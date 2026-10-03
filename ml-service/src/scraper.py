@@ -34,6 +34,7 @@ def fetch_all_levels():
         time.sleep(0.1)
 
     print(f"Pulled {len(all_levels)} levels total")
+    print(all_levels[0].keys())
     return all_levels
 
 def save_raw_levels(rated_levels):

@@ -7,6 +7,9 @@ Import what you need here. E.g.
 from pathlib import Path
 import pandas as pd
 import lightgbm as lgb
+import json, re, tempfile
+from adofaipy import LevelDict
+import os
 
 TIER_VALUES = {"P": 0, "G": 20, "U": 40}
 
@@ -21,7 +24,7 @@ FEATURE_COLUMNS = [
 
 def extract_gameplay_features(level_json):
     settings = level_json.get("settings", {})
-    angle_data = level_json.get("angleData", [])
+    angle_data = get_angle_data(level_json)
     actions = level_json.get("actions", [])
 
     tile_count = len(angle_data)
@@ -50,8 +53,37 @@ def extract_gameplay_features(level_json):
         "rt_score": rt_score,
         "p_var": p_var,
     }
-# Prediction process
+# Safe parsing function since some levels are missing or have extra commas and returns error 500
+def safe_parse_level(raw_bytes):
+    text = raw_bytes.decode("utf-8-sig").strip()
 
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        text = re.sub(r"\}(\s*)\{", r"},\1{", text) # Adds any missing commas between objects
+        text = re.sub(r",(\s*)\}", r"\1}", text) # Removes extra comma before }
+        text = re.sub(r",(\s*)\]", r"\1]", text) # Removes extra commas at end of lists
+        text = re.sub(r"[\x00-\x1f]+", " ", text) # Removes ASCII control characters 
+        return json.loads(text)
+
+# Some .adofai files use a legacy formatting using "pathData" rather than the current "angleData". 
+def get_angle_data(level_json):
+    if "angleData" in level_json:
+        return level_json["angleData"]
+
+    if "pathData" in level_json:
+        # Locates the path of the .adofai file
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".adofai", delete=False) as file:
+            json.dump(level_json, file)
+            path = file.name
+        try:
+            return LevelDict(path).getAngles()
+        finally:
+            # Deletes the temporary file
+            os.remove(path)
+    return []
+
+# Prediction process
 def num_to_pgu(number):
     rounded = round(number)
     clamped = max(1, min(rounded, 60))
@@ -66,11 +98,10 @@ def num_to_pgu(number):
         letter = "U"
         tier_number = clamped - 40
     return f"{letter}{tier_number}"
-
-# TODO STILL WORKING ON
+                                                    
 def calculate_stamina_difficulty(level_json):
     settings = level_json.get("settings", {})
-    angle_data = level_json.get("angleData", [])
+    angle_data = get_angle_data(level_json)
     actions = level_json.get("actions", [])
 
     tile_count = len(angle_data)
@@ -104,7 +135,7 @@ def calculate_stamina_difficulty(level_json):
 
 def calculate_rhythm_tech(level_json):
     settings = level_json.get("settings", {})
-    angle_data = level_json.get("angleData", [])
+    angle_data = get_angle_data(level_json)
     actions = level_json.get("actions", [])
 
     tile_count = len(angle_data)
@@ -173,7 +204,7 @@ def calculate_rhythm_tech(level_json):
     return r_irr, g_tech, rt_score
 
 def calculate_pattern_variety(level_json):
-    angle_data = level_json.get("angleData", [])
+    angle_data = get_angle_data(level_json)
     actions = level_json.get("actions", [])
     
     tile_count = len(angle_data)

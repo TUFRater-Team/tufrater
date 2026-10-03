@@ -9,7 +9,7 @@ import requests
 
 from concurrent.futures import ThreadPoolExecutor
 
-from core import extract_gameplay_features, calculate_pattern_variety, calculate_rhythm_tech, calculate_stamina_difficulty
+from core import extract_gameplay_features, safe_parse_level
 from db import get_db
 
 MAX_WORKERS = 20
@@ -22,7 +22,7 @@ def parse_one_level(row):
 
     try:
         resp = requests.get(row["dlLink"], timeout=10)
-        level_json = resp.json()
+        level_json = safe_parse_level(resp.content)
 
         if "error" in level_json:
             print(f"Skipping id {row['id']}: {level_json['error']}")
