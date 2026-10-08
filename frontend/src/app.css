@@ -36,9 +36,13 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: start center;
+  display: flex;             /* Changed from grid to flex for easier width control */
+  justify-content: center;   /* Centers horizontally */
   padding: 3rem 1rem;
+}
+
+main.container {
+  width: 100%;
 }
 
 h1 {
