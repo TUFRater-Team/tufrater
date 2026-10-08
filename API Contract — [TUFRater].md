@@ -5,7 +5,7 @@
 - **URL Path:** `/`
 - **HTTP Method:** `GET`
 - **What to send:** Nothing (no body, no headers needed).
-- **Return (JSON):**
+- **Response (JSON):**
 
 ```json
 {
@@ -18,7 +18,7 @@
 - **URL Path:** `/files/upload`
 - **HTTP Method:** `POST`
 - **What to send:** A file payload. Because the backend code expects `file: UploadFile`, the frontend **must** send this using a `FormData` object (not raw JSON), with the key name set to `"file"`.
-- **Return (JSON):**
+- **Response (JSON):**
 
 ```json
 {
