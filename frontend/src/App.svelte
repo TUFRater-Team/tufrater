@@ -65,12 +65,15 @@
 
 <style>
   .container {
-    max-width: 600px;
-    margin: 3rem auto;
+    max-width: 90vw;
+    margin: 2vw;
     background-color: var(--surface);
     font-family: sans-serif;
-    padding: 0 1rem;
+    text-align: center;
+    align-content: center;
+    padding: 1vw;
   }
+
   .placeholder {
     color: #888;
   }

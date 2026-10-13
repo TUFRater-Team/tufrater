@@ -58,3 +58,53 @@
     <p class="error">{errorMessage}</p>
   {/if}
 </div>
+
+<style>
+  input[type="file"] {
+    display: block;
+    width: 100%;
+    height: 6vh;
+    padding: 1vh;
+    color: #eee;
+    font-family: sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    align-content: center;
+    background-color: var(--surface);
+    border: 2px dashed #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  /* Hover state */
+  input[type="file"]:hover:not(:disabled) {
+    background-color: var(--surface);
+    border-color: #0056b3;
+  }
+
+  /* Disabled state */
+  input[type="file"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--surface);
+  }
+
+  /* Hide the default browser file text/button */
+  input[type="file"]::file-selector-button {
+    display: none;
+  }
+
+  /* Custom text prompt inside the file input */
+  input[type="file"]::before {
+    content: "Drag & drop files here or click to browse";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+</style>
